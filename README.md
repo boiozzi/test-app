@@ -1,220 +1,296 @@
-# Create React App [![Build & Test](https://github.com/facebook/create-react-app/actions/workflows/build-and-test.yml/badge.svg?branch=main)](https://github.com/facebook/create-react-app/actions/workflows/build-and-test.yml) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](https://github.com/facebook/create-react-app/blob/main/CONTRIBUTING.md)
+# Deploying a React App* to GitHub Pages
 
-<img alt="Logo" align="right" src="https://create-react-app.dev/img/logo.svg" width="20%" />
+\* created using `create-react-app`
 
-Create React apps with no build configuration.
+# Introduction
 
-- [Creating an App](#creating-an-app) – How to create a new app.
-- [User Guide](https://facebook.github.io/create-react-app/) – How to develop apps bootstrapped with Create React App.
+In this tutorial, I'll show you how you can create a React app and deploy it to GitHub Pages.
 
-Create React App works on macOS, Windows, and Linux.<br>
-If something doesn’t work, please [file an issue](https://github.com/facebook/create-react-app/issues/new).<br>
-If you have questions or need help, please ask in [GitHub Discussions](https://github.com/facebook/create-react-app/discussions).
+To create the React app, I'll be using [`create-react-app`](https://create-react-app.dev/), which is a tool people can use to create a React app from scratch. To deploy the React app, I'll be using [`gh-pages`](https://github.com/tschaub/gh-pages), which is an npm package people can use to deploy things to [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages), a free web hosting service provided by GitHub.
 
-## Quick Overview
+If you follow along with this tutorial, you'll end up with a new React app—hosted on GitHub Pages—which you can then customize.
 
-```sh
-npx create-react-app my-app
-cd my-app
-npm start
-```
+## Translations
 
-If you've previously installed `create-react-app` globally via `npm install -g create-react-app`, we recommend you uninstall the package using `npm uninstall -g create-react-app` or `yarn global remove create-react-app` to ensure that npx always uses the latest version.
+This tutorial has been translated from its original English into the following languages:
+- [Traditional Chinese](https://github.com/gitname/react-gh-pages/issues/167#issuecomment-1925551338) (credit: [@creaper9487](https://github.com/creaper9487))
 
-_([npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher, see [instructions for older npm versions](https://gist.github.com/gaearon/4064d3c23a77c74a3614c498a8bb1c5f))_
+# Tutorial
 
-Then open [http://localhost:3000/](http://localhost:3000/) to see your app.<br>
-When you’re ready to deploy to production, create a minified bundle with `npm run build`.
+## Prerequisites
 
-<p align='center'>
-<img src='https://cdn.jsdelivr.net/gh/facebook/create-react-app@27b42ac7efa018f2541153ab30d63180f5fa39e0/screencast.svg' width='600' alt='npm start'>
-</p>
+1. [Node and npm](https://nodejs.org/en/download/) are installed. Here are the versions I'll be using while making this tutorial:
 
-### Get Started Immediately
+    ```shell
+    $ node --version
+    v16.13.2
 
-You **don’t** need to install or configure tools like webpack or Babel.<br>
-They are preconfigured and hidden so that you can focus on the code.
+    $ npm --version
+    8.1.2
+    ```
+    > Installing npm adds two commands to the system—`npm` and `npx`—both of which I'll be using while making this tutorial.
 
-Create a project, and you’re good to go.
+2. [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) is installed. Here's the version I'll be using while making this tutorial:
 
-## Creating an App
+    ```shell
+    $ git --version
+    git version 2.29.1.windows.1
+    ```
 
-**You’ll need to have Node 14.0.0 or later version on your local development machine** (but it’s not required on the server). We recommend using the latest LTS version. You can use [nvm](https://github.com/creationix/nvm#installation) (macOS/Linux) or [nvm-windows](https://github.com/coreybutler/nvm-windows#node-version-manager-nvm-for-windows) to switch Node versions between different projects.
+3. A [GitHub](https://github.com/signup) account. :octocat:
 
-To create a new app, you may choose one of the following methods:
+## Procedure
 
-### npx
+### 1. Create an **empty** repository on GitHub
 
-```sh
-npx create-react-app my-app
-```
+1. Sign into your GitHub account.
+2. Visit the [Create a new repository](https://github.com/new) form.
+3. Fill in the form as follows:
+    - **Repository name:** You can enter any name you want\*.
 
-_([npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) is a package runner tool that comes with npm 5.2+ and higher, see [instructions for older npm versions](https://gist.github.com/gaearon/4064d3c23a77c74a3614c498a8bb1c5f))_
+        > \* For a [project site](https://pages.github.com/#project-site), you can enter any name you want. For a [user site](https://pages.github.com/#user-site), GitHub [requires](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#types-of-github-pages-sites) that the repository's name have the following format: `{username}.github.io` (e.g. `gitname.github.io`)
+        
+        > The name you enter will show up in a few places: (a) in references to the repository throughout GitHub, (b) in the URL of the repository, and (c) in the URL of the deployed React app.
 
-### npm
+        > In this tutorial, I'll be deploying the React app as a project site.
 
-```sh
-npm init react-app my-app
-```
+        I'll enter: `react-gh-pages`
+        
+   - **Repository privacy:** Select _Public_ (or _Private_\*).
 
-_`npm init <initializer>` is available in npm 6+_
+        > \* For [GitHub Free](https://docs.github.com/en/get-started/learning-about-github/githubs-products#github-free-for-user-accounts) users, the only type of repository that can be used with GitHub Pages is _Public_. For [GitHub Pro](https://docs.github.com/en/get-started/learning-about-github/githubs-products#github-pro) users (and other paying users), both _Public_ and _Private_ repositories can be used with GitHub Pages.
 
-### Yarn
+        I'll choose: _Public_
 
-```sh
-yarn create react-app my-app
-```
+   - **Initialize repository:** Leave all checkboxes empty.
 
-_[`yarn create <starter-kit-package>`](https://yarnpkg.com/lang/en/docs/cli/create/) is available in Yarn 0.25+_
+        > That will make it so GitHub creates an empty repository, instead of pre-populating the repository with a `README.md`, `.gitignore`, and/or `LICENSE` file.
+4. Submit the form.
 
-It will create a directory called `my-app` inside the current folder.<br>
-Inside that directory, it will generate the initial project structure and install the transitive dependencies:
+At this point, your GitHub account contains an empty repository, having the name and privacy type that you specified.
 
-```
-my-app
-├── README.md
-├── node_modules
-├── package.json
-├── .gitignore
-├── public
-│   ├── favicon.ico
-│   ├── index.html
-│   └── manifest.json
-└── src
-    ├── App.css
-    ├── App.js
-    ├── App.test.js
-    ├── index.css
-    ├── index.js
-    ├── logo.svg
-    └── serviceWorker.js
-    └── setupTests.js
-```
+### 2. Create a React app
 
-No configuration or complicated folder structures, only the files you need to build your app.<br>
-Once the installation is done, you can open your project folder:
+1. Create a React app named `my-app`:
 
-```sh
-cd my-app
-```
+    > In case you want to use a different name from `my-app` (e.g. `web-ui`), you can accomplish that by replacing all occurrences of `my-app` in this tutorial, with that other name (i.e. `my-app` --> `web-ui`).
+  
+    ```shell
+    $ npx create-react-app my-app
+    ```
 
-Inside the newly created project, you can run some built-in commands:
+    > That command will create a React app written in JavaScript. To create one written in [TypeScript](https://create-react-app.dev/docs/adding-typescript/#installation), you can issue this command instead:
+    > ```shell
+    > $ npx create-react-app my-app --template typescript
+    > ```
 
-### `npm start` or `yarn start`
+    That command will create a new folder named `my-app`, which will contain the source code of a React app.
 
-Runs the app in development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+    > In addition to containing the source code of the React app, that folder is also a Git repository. That characteristic of the folder will come into play in Step 6.
 
-The page will automatically reload if you make changes to the code.<br>
-You will see the build errors and lint warnings in the console.
+    > #### Branch names: `master` vs. `main`
+    > 
+    > The Git repository will have one branch, which will be named either (a) `master`, the default for a fresh Git installation; or (b) the value of the Git configuration variable, `init.defaultBranch`, if your computer is running Git version 2.28 or later _and_ you have [set that variable](https://github.blog/2020-07-27-highlights-from-git-2-28/#introducing-init-defaultbranch) in your Git configuration (e.g. via `$ git config --global init.defaultBranch main`).
+    >
+    > Since I have not set that variable in my Git installation, the branch in my repository will be named `master`. In case the branch in your repository has a different name (which you can check by running  `$ git branch`), such as `main`; you can **replace** all occurrences of `master` throughout the remainder of this tutorial, with that other name (e.g. `master` → `main`).
 
-<p align='center'>
-<img src='https://cdn.jsdelivr.net/gh/marionebl/create-react-app@9f6282671c54f0874afd37a72f6689727b562498/screencast-error.svg' width='600' alt='Build errors'>
-</p>
+2. Enter the newly-created folder:
+  
+    ```shell
+    $ cd my-app
+    ```
 
-### `npm test` or `yarn test`
+At this point, there is a React app on your computer and you are in the folder that contains its source code. All of the remaining commands shown in this tutorial can be run from that folder.
 
-Runs the test watcher in an interactive mode.<br>
-By default, runs tests related to files changed since the last commit.
+### 3. Install the `gh-pages` npm package
 
-[Read more about testing.](https://facebook.github.io/create-react-app/docs/running-tests)
+1. Install the [`gh-pages`](https://github.com/tschaub/gh-pages) npm package and designate it as a [development dependency](https://docs.npmjs.com/specifying-dependencies-and-devdependencies-in-a-package-json-file):
+ 
+    ```shell
+    $ npm install gh-pages --save-dev
+    ```
 
-### `npm run build` or `yarn build`
+At this point, the `gh-pages` npm package is installed on your computer and the React app's dependence upon it is documented in the React app's `package.json` file.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 4. Add a `homepage` property to the `package.json` file
 
-The build is minified and the filenames include the hashes.<br>
+1. Open the `package.json` file in a text editor.
+   
+    ```shell
+    $ vi package.json
+    ```
 
-Your app is ready to be deployed.
+    > In this tutorial, the text editor I'll be using is [vi](https://www.vim.org/). You can use any text editor you want; for example, [Visual Studio Code](https://code.visualstudio.com/).
 
-## User Guide
+2. Add a `homepage` property in this format\*: `https://{username}.github.io/{repo-name}`
 
-You can find detailed instructions on using Create React App and many tips in [its documentation](https://facebook.github.io/create-react-app/).
+    > \* For a [project site](https://pages.github.com/#project-site), that's the format. For a [user site](https://pages.github.com/#user-site), the format is: `https://{username}.github.io`. You can read more about the `homepage` property in the ["GitHub Pages" section](https://create-react-app.dev/docs/deployment/#github-pages) of the `create-react-app` documentation.
 
-## How to Update to New Versions?
+    ```diff
+    {
+      "name": "my-app",
+      "version": "0.1.0",
+    + "homepage": "https://gitname.github.io/react-gh-pages",
+      "private": true,
+    ```
+At this point, the React app's `package.json` file includes a property named `homepage`.
 
-Please refer to the [User Guide](https://facebook.github.io/create-react-app/docs/updating-to-new-releases) for this and other information.
+### 5. Add deployment scripts to the `package.json` file
 
-## Philosophy
+1. Open the `package.json` file in a text editor (if it isn't already open in one).
+   
+    ```shell
+    $ vi package.json
+    ```
 
-- **One Dependency:** There is only one build dependency. It uses webpack, Babel, ESLint, and other amazing projects, but provides a cohesive curated experience on top of them.
+2. Add a `predeploy` property and a `deploy` property to the `scripts` object:
 
-- **No Configuration Required:** You don't need to configure anything. A reasonably good configuration of both development and production builds is handled for you so you can focus on writing code.
+    ```diff
+    "scripts": {
+    +   "predeploy": "npm run build",
+    +   "deploy": "gh-pages -d build",
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+    ```
 
-- **No Lock-In:** You can “eject” to a custom setup at any time. Run a single command, and all the configuration and build dependencies will be moved directly into your project, so you can pick up right where you left off.
+At this point, the  React app's `package.json` file includes deployment scripts.
 
-## What’s Included?
+### 6. Add a "remote" that points to the GitHub repository
 
-Your environment will have everything you need to build a modern single-page React app:
+1. Add a "[remote](https://git-scm.com/docs/git-remote)" to the local Git repository.
 
-- React, JSX, ES6, TypeScript and Flow syntax support.
-- Language extras beyond ES6 like the object spread operator.
-- Autoprefixed CSS, so you don’t need `-webkit-` or other prefixes.
-- A fast interactive unit test runner with built-in support for coverage reporting.
-- A live development server that warns about common mistakes.
-- A build script to bundle JS, CSS, and images for production, with hashes and sourcemaps.
-- An offline-first [service worker](https://developers.google.com/web/fundamentals/getting-started/primers/service-workers) and a [web app manifest](https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/), meeting all the [Progressive Web App](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app) criteria. (_Note: Using the service worker is opt-in as of `react-scripts@2.0.0` and higher_)
-- Hassle-free updates for the above tools with a single dependency.
+    You can do that by issuing a command in this format: 
+    
+    ```shell
+    $ git remote add origin https://github.com/{username}/{repo-name}.git
+    ```
+    
+    To customize that command for your situation, replace `{username}` with your GitHub username and replace `{repo-name}` with the name of the GitHub repository you created in Step 1.
 
-Check out [this guide](https://github.com/nitishdayal/cra_closer_look) for an overview of how these tools fit together.
+    In my case, I'll run:
 
-The tradeoff is that **these tools are preconfigured to work in a specific way**. If your project needs more customization, you can ["eject"](https://facebook.github.io/create-react-app/docs/available-scripts#npm-run-eject) and customize it, but then you will need to maintain this configuration.
+    ```shell
+    $ git remote add origin https://github.com/gitname/react-gh-pages.git
+    ```
 
-## Popular Alternatives
+    > That command tells Git where I want it to push things whenever I—or the `gh-pages` npm package acting on my behalf—issue the `$ git push` command from within this local Git repository.
 
-Create React App is a great fit for:
+At this point, the local repository has a "remote" whose URL points to the GitHub repository you created in Step 1.
 
-- **Learning React** in a comfortable and feature-rich development environment.
-- **Starting new single-page React applications.**
-- **Creating examples** with React for your libraries and components.
+### 7. Push the React app to the GitHub repository
 
-Here are a few common cases where you might want to try something else:
+1. Push the React app to the GitHub repository
 
-- If you want to **try React** without hundreds of transitive build tool dependencies, consider [using a single HTML file or an online sandbox instead](https://reactjs.org/docs/getting-started.html#try-react).
+    ```shell
+    $ npm run deploy
+    ```
 
-- If you need to **integrate React code with a server-side template framework** like Rails, Django or Symfony, or if you’re **not building a single-page app**, consider using [nwb](https://github.com/insin/nwb), or [Neutrino](https://neutrino.js.org/) which are more flexible. For Rails specifically, you can use [Rails Webpacker](https://github.com/rails/webpacker). For Symfony, try [Symfony's webpack Encore](https://symfony.com/doc/current/frontend/encore/reactjs.html).
+    > That will cause the `predeploy` and `deploy` scripts defined in `package.json` to run.
+    >
+    > Under the hood, the `predeploy` script will build a distributable version of the React app and store it in a folder named `build`. Then, the `deploy` script will push the contents of that folder to a new commit on the `gh-pages` branch of the GitHub repository, creating that branch if it doesn't already exist.
 
-- If you need to **publish a React component**, [nwb](https://github.com/insin/nwb) can [also do this](https://github.com/insin/nwb#react-components-and-libraries), as well as [Neutrino's react-components preset](https://neutrino.js.org/packages/react-components/).
+    > By default, the new commit on the `gh-pages` branch will have a commit message of "Updates". You can [specify a custom commit message](https://github.com/gitname/react-gh-pages/issues/80#issuecomment-1042449820) via the `-m` option, like this:
+    > ```shell
+    > $ npm run deploy -- -m "Deploy React app to GitHub Pages"
+    > ```
 
-- If you want to do **server rendering** with React and Node.js, check out [Next.js](https://nextjs.org/) or [Razzle](https://github.com/jaredpalmer/razzle). Create React App is agnostic of the backend, and only produces static HTML/JS/CSS bundles.
+At this point, the GitHub repository contains a branch named `gh-pages`, which contains the files that make up the distributable version of the React app. However, we haven't configured GitHub Pages to _serve_ those files yet.
 
-- If your website is **mostly static** (for example, a portfolio or a blog), consider using [Gatsby](https://www.gatsbyjs.org/) or [Next.js](https://nextjs.org/). Unlike Create React App, Gatsby pre-renders the website into HTML at build time. Next.js supports both server rendering and pre-rendering.
+### 8. Configure GitHub Pages
 
-- Finally, if you need **more customization**, check out [Neutrino](https://neutrino.js.org/) and its [React preset](https://neutrino.js.org/packages/react/).
+1. Navigate to the **GitHub Pages** settings page
+   1. In your web browser, navigate to the GitHub repository
+   1. Above the code browser, click on the tab labeled "Settings"
+   1. In the sidebar, in the "Code and automation" section, click on "Pages"
+1. Configure the "Build and deployment" settings like this: 
+   1. **Source**: Deploy from a branch
+   2. **Branch**: 
+      - Branch: `gh-pages`
+      - Folder: `/ (root)`
+1. Click on the "Save" button
 
-All of the above tools can work with little to no configuration.
+**That's it!** The React app has been deployed to GitHub Pages! :rocket:
 
-If you prefer configuring the build yourself, [follow this guide](https://reactjs.org/docs/add-react-to-a-website.html).
+At this point, the React app is accessible to anyone who visits the `homepage` URL you specified in Step 4. For example, the React app I deployed is accessible at https://gitname.github.io/react-gh-pages.
 
-## React Native
+### 9. (Optional) Store the React app's _source code_ on GitHub
 
-Looking for something similar, but for React Native?<br>
-Check out [Expo CLI](https://github.com/expo/expo-cli).
+In a previous step, the `gh-pages` npm package pushed the distributable version of the React app to a branch named `gh-pages` in the GitHub repository. However, the _source code_ of the React app is not yet stored on GitHub.
 
-## Contributing
+In this step, I'll show you how you can store the source code of the React app on GitHub.
 
-We'd love to have your helping hand on `create-react-app`! See [CONTRIBUTING.md](CONTRIBUTING.md) for more information on what we're looking for and how to get started.
+1. Commit the changes you made while you were following this tutorial, to the `master` branch of the local Git repository; then, push that branch up to the `master` branch of the GitHub repository.
 
-## Supporting Create React App
+    ```shell
+    $ git add .
+    $ git commit -m "Configure React app for deployment to GitHub Pages"
+    $ git push origin master
+    ```
 
-Create React App is a community maintained project and all contributors are volunteers. If you'd like to support the future development of Create React App then please consider donating to our [Open Collective](https://opencollective.com/create-react-app).
+    > I recommend exploring the GitHub repository at this point. It will have two branches: `master` and `gh-pages`. The `master` branch will contain the React app's source code, while the `gh-pages` branch will contain the distributable version of the React app.
 
-## Credits
+# References
 
-This project exists thanks to all the people who [contribute](CONTRIBUTING.md).<br>
-<a href="https://github.com/facebook/create-react-app/graphs/contributors"><img src="https://opencollective.com/create-react-app/contributors.svg?width=890&button=false" /></a>
+1. [The official `create-react-app` deployment guide](https://create-react-app.dev/docs/deployment/#github-pages)
+2. [GitHub blog: Build and deploy GitHub Pages from any branch](https://github.blog/changelog/2020-09-03-build-and-deploy-github-pages-from-any-branch/)
+3. [Preserving the `CNAME` file when using a custom domain](https://github.com/gitname/react-gh-pages/issues/89#issuecomment-1207271670)
 
-Thanks to [Netlify](https://www.netlify.com/) for hosting our documentation.
+# Notes
 
-## Acknowledgements
+- Special thanks to GitHub (the company) for providing us with the GitHub Pages hosting service for free.
+- And now, time to turn the default React app generated by `create-react-app` into something unique!
+- This repository consists of two branches: 
+    - `master` - the _source code_ of the React app
+    - `gh-pages` - the React app _built from_ that source code
 
-We are grateful to the authors of existing related projects for their ideas and collaboration:
+ # Contributors
 
-- [@eanplatter](https://github.com/eanplatter)
-- [@insin](https://github.com/insin)
-- [@mxstbr](https://github.com/mxstbr)
+Thanks to these people for contributing to the maintenance of this tutorial.
 
-## License
+<!--
 
-Create React App is open source software [licensed as MIT](https://github.com/facebook/create-react-app/blob/main/LICENSE). The Create React App logo is licensed under a [Creative Commons Attribution 4.0 International license](https://creativecommons.org/licenses/by/4.0/).
+Template:
+---------
+
+<a href="https://github.com/____" target="_blank" title="____">
+  <img src="https://github.com/____.png?size=40" height="40" width="40" alt="____" />
+</a>
+
+Instructions:
+-------------
+
+1. Copy the template and paste it below.
+2. Replace the four "____" strings with the contributor's GitHub username.
+
+Note: I specified the avatars using HTML because, when I did so using Markdown,
+      only the _custom_ avatars appeared at the size I specified via the URL
+      (e.g. 40px squared, for `https://github.com/gitname.png?size=40`);
+      the GitHub-generated avatars seemed to ignore the size parameter and,
+      instead, appear at their full size (approximately 420px squared).
+      By using HTML, I can force _both_ types to appear at 40px squared.
+
+-->
+
+<a href="https://github.com/gitname" target="_blank" title="gitname">
+  <img src="https://github.com/gitname.png?size=40" height="40" width="40" alt="gitname" />
+</a>
+<a href="https://github.com/rhulse" target="_blank" title="rhulse">
+  <img src="https://github.com/rhulse.png?size=40" height="40" width="40" alt="rhulse" />
+</a>
+<a href="https://github.com/AbhishekCode" target="_blank" title="AbhishekCode">
+  <img src="https://github.com/AbhishekCode.png?size=40" height="40" width="40" alt="AbhishekCode" />
+</a>
+<a href="https://github.com/adnjoo" target="_blank" title="adnjoo">
+  <img src="https://github.com/adnjoo.png?size=40" height="40" width="40" alt="adnjoo" />
+</a>
+<a href="https://github.com/thebeatlesphan" target="_blank" title="thebeatlesphan">
+  <img src="https://github.com/thebeatlesphan.png?size=40" height="40" width="40" alt="thebeatlesphan" />
+</a>
+<a href="https://github.com/valerio-pescatori" target="_blank" title="valerio-pescatori">
+  <img src="https://github.com/valerio-pescatori.png?size=40" height="40" width="40" alt="valerio-pescatori" />
+</a>
+<a href="https://github.com/jackweyhrich" target="_blank" title="jackweyhrich">
+  <img src="https://github.com/jackweyhrich.png?size=40" height="40" width="40" alt="jackweyhrich" />
+</a>
+
+This list is maintained manually—for now—and includes (a) each person who submitted a pull request that was eventually merged into `master`, and (b) each person who contributed in a different way (e.g. providing constructive feedback) and who approved of me including them in this list.
