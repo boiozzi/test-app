@@ -1,54 +1,47 @@
-// src/App.js
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import Section1 from './Section1';
+import logo from './assets/images/logo.png';
 
 function App() {
-  // Define some example steps
   const steps = [
     { title: 'Applicant Details' },
     { title: 'Current Residency' },
-    { title: 'Settlement Destination' }
+    { title: 'Settlement Destination' },
   ];
 
-  // State for the current step (starting at step 1)
   const [currentStep, setCurrentStep] = useState(1);
 
-  // Handler for when a step in the sidebar is clicked
   const handleStepClick = (stepNumber) => {
     setCurrentStep(stepNumber);
   };
 
   return (
+    <div>
+      {/* Green Banner */}
+      <div style={{ backgroundColor: '#0b6623', padding: '10px 20px', display: 'flex', alignItems: 'center' }}>
+        <img
+          src={logo}
+          alt="Logo"
+          style={{ width: '170px', height: 'auto', marginRight: '15px' }}
+        />
+        <h1 style={{ color: 'white', margin: 0, fontSize: '1.8rem' }}>Welcome to Our App</h1>
+      </div>
 
-    <div style={styles.container}>
-      <Sidebar
-        steps={steps}
-        currentStep={currentStep}
-        onStepClick={handleStepClick}
-      />
-
-      <Section1 />
-
-      {/* Main content area */}
-      <div style={styles.content}>
-        <h1>Welcome to Our App</h1>
-        <p>Current step: {currentStep}</p>
+      {/* Main Content */}
+      <div className="d-flex">
+        <Sidebar
+          steps={steps}
+          currentStep={currentStep}
+          onStepClick={handleStepClick}
+        />
+        <Section1 />
+        <div className="flex-grow-1 p-4">
+          <h2>Current Step: {currentStep}</h2>
+        </div>
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    display: 'flex',
-    // The sidebar will be on the left, content on the right
-    minHeight: '100vh'
-  },
-  content: {
-    flex: 1,
-    padding: '1rem'
-  }
-};
 
 export default App;
