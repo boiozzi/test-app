@@ -16,7 +16,7 @@ const Sidebar = ({ steps, currentStep, onStepClick }) => {
                 ...styles.li,
                 ...(isActive ? styles.active : {})
               }}
-              onClick={() => onStepClick(stepNumber)} 
+              onClick={() => onStepClick(stepNumber)}
             >
               Step {stepNumber}: {step.title}
             </li>
@@ -31,7 +31,7 @@ const styles = {
   sidebar: {
     width: '200px',
     borderRight: '1px solid #ccc',
-    minHeight: '100vh', 
+    minHeight: '100vh',
     padding: '1rem',
     backgroundColor: '#f8f8f8'
   },

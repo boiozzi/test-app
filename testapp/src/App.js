@@ -1,47 +1,110 @@
-import React, { useState } from 'react';
-import Sidebar from './Sidebar';
-import Section1 from './Section1';
-import logo from './assets/images/logo.png';
+// import React from "react";
+// import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+// import Navbar from "./components/Navbar";
+// import Sidebar from "./components/Sidebar";
+// import Dashboard from "./components/Dashboard";
+// import Section1 from "./components/Section1";
+// import Section2 from "./components/Section2";
 
-function App() {
+// function App() {
+//   return (
+//     <Router>
+//       <div>
+//         <Navbar />
+//         <Routes>
+//           <Route path="/" element={<Dashboard />} />
+//           <Route
+//             path="/create-report"
+//             element={
+//               <div style={{ display: "flex", minHeight: "100vh" }}>
+//                 <Sidebar
+//                   steps={[
+//                     { title: "Applicant Details", path: "/create-report" },
+//                     { title: "Current Residency", path: "/section2" },
+//                   ]}
+//                   currentStep={1}
+//                   onStepClick={() => {}}
+//                 />
+//                 <div style={{ flex: 1, padding: "20px" }}>
+//                   <Section1 />
+//                 </div>
+//               </div>
+//             }
+//           />
+//           <Route
+//             path="/section2"
+//             element={
+//               <div style={{ display: "flex", minHeight: "100vh" }}>
+//                 <Sidebar
+//                   steps={[
+//                     { title: "Applicant Details", path: "/create-report" },
+//                     { title: "Current Residency", path: "/section2" },
+//                   ]}
+//                   currentStep={2}
+//                   onStepClick={() => {}}
+//                 />
+//                 <div style={{ flex: 1, padding: "20px" }}>
+//                   <Section2 />
+//                 </div>
+//               </div>
+//             }
+//           />
+//           {/* Add more sections here */}
+//           <Route path="*" element={<Navigate to="/" />} />
+//         </Routes>
+//       </div>
+//     </Router>
+//   );
+// }
+
+// export default App;
+
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
+import Dashboard from "./components/Dashboard";
+import Section1 from "./components/Section1";
+import Section2 from "./components/Section2";
+
+const App = () => {
+  return (
+    <Router>
+      <div>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/create-report" element={<Layout currentStep={1} component={<Section1 />} />} />
+          <Route path="/section2" element={<Layout currentStep={2} component={<Section2 />} />} />
+          {/* Add more sections here */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+};
+
+const Layout = ({ currentStep, component }) => {
+  const navigate = useNavigate();
+
   const steps = [
-    { title: 'Applicant Details' },
-    { title: 'Current Residency' },
-    { title: 'Settlement Destination' },
+    { title: "Applicant Details", path: "/create-report" },
+    { title: "Current Residency", path: "/section2" },
+    // Add more steps if needed
   ];
 
-  const [currentStep, setCurrentStep] = useState(1);
-
-  const handleStepClick = (stepNumber) => {
-    setCurrentStep(stepNumber);
-  };
-
   return (
-    <div>
-      {/* Green Banner */}
-      <div style={{ backgroundColor: '#0b6623', padding: '10px 20px', display: 'flex', alignItems: 'center' }}>
-        <img
-          src={logo}
-          alt="Logo"
-          style={{ width: '170px', height: 'auto', marginRight: '15px' }}
-        />
-        <h1 style={{ color: 'white', margin: 0, fontSize: '1.8rem' }}>Welcome to Our App</h1>
-      </div>
-
-      {/* Main Content */}
-      <div className="d-flex">
-        <Sidebar
-          steps={steps}
-          currentStep={currentStep}
-          onStepClick={handleStepClick}
-        />
-        <Section1 />
-        <div className="flex-grow-1 p-4">
-          <h2>Current Step: {currentStep}</h2>
-        </div>
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      <Sidebar
+        steps={steps}
+        currentStep={currentStep}
+        onStepClick={(step) => navigate(step.path)}
+      />
+      <div style={{ flex: 1, padding: "20px" }}>
+        {component}
       </div>
     </div>
   );
-}
+};
 
 export default App;
