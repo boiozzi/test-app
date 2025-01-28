@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../App.css'; // Import global styles
 
-function Section10() {
+function Section7() {
   const navigate = useNavigate();
-  const apiUrl = 'https://obscure-space-cod-q54w6v574v5f9q4q-8080.app.github.dev/api/section10';
+  const apiUrl = 'https://obscure-space-cod-q54w6v574v5f9q4q-8080.app.github.dev/api/section7';
 
   const [formData, setFormData] = useState({
-    comments: '',
+    cofferdamsComments: '',
   });
 
   const handleChange = (e) => {
@@ -39,16 +39,16 @@ function Section10() {
         Back to Dashboard
       </button>
 
-      <h2 className="section-title">Section 10 - Additional Permits</h2>
+      <h2 className="section-title">Section 7 - Cofferdams</h2>
 
       <form onSubmit={handleSubmit}>
         {/* Row 1: Comments */}
         <div className="row">
           <div className="field">
-            <label>Additional Permits Comments:</label>
+            <label>Cofferdams Comments:</label>
             <textarea
-              name="comments"
-              value={formData.comments}
+              name="cofferdamsComments"
+              value={formData.cofferdamsComments}
               onChange={handleChange}
               className="form-control"
               placeholder="Enter comments..."
@@ -65,4 +65,4 @@ function Section10() {
   );
 }
 
-export default Section10;
+export default Section7;

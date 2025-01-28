@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../App.css'; // Import global styles
 
-function Section10() {
+function Section5() {
   const navigate = useNavigate();
-  const apiUrl = 'https://obscure-space-cod-q54w6v574v5f9q4q-8080.app.github.dev/api/section10';
+  const apiUrl = 'https://obscure-space-cod-q54w6v574v5f9q4q-8080.app.github.dev/api/section5';
 
   const [formData, setFormData] = useState({
-    comments: '',
+    rareEndangeredSpecies: '',
+    speciesComments: '',
   });
 
   const handleChange = (e) => {
@@ -39,16 +40,33 @@ function Section10() {
         Back to Dashboard
       </button>
 
-      <h2 className="section-title">Section 10 - Additional Permits</h2>
+      <h2 className="section-title">Section 5 - Rare, Endangered, & Identified Species</h2>
 
       <form onSubmit={handleSubmit}>
-        {/* Row 1: Comments */}
+        {/* Row 1: Rare or Endangered Species */}
         <div className="row">
           <div className="field">
-            <label>Additional Permits Comments:</label>
+            <label>Are rare or endangered species present?</label>
+            <select
+              name="rareEndangeredSpecies"
+              value={formData.rareEndangeredSpecies}
+              onChange={handleChange}
+              className="form-control"
+            >
+              <option value="">Select</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Row 2: Comments */}
+        <div className="row">
+          <div className="field">
+            <label>Comments (species and mitigation measures):</label>
             <textarea
-              name="comments"
-              value={formData.comments}
+              name="speciesComments"
+              value={formData.speciesComments}
               onChange={handleChange}
               className="form-control"
               placeholder="Enter comments..."
@@ -65,4 +83,4 @@ function Section10() {
   );
 }
 
-export default Section10;
+export default Section5;

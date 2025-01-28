@@ -1,28 +1,30 @@
-// src/components/Sidebar.jsx
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Sidebar = ({ steps, currentStep, onStepClick }) => {
+const Sidebar = ({ steps, currentStep }) => {
+  const navigate = useNavigate();
+
   return (
     <div style={styles.sidebar}>
-      <ul style={styles.ul}>
-        {steps.map((step, index) => {
-          const stepNumber = index + 1;
-          const isActive = currentStep === stepNumber;
+      {steps.map((step, index) => {
+        const stepNumber = index + 1;
+        const isActive = currentStep === stepNumber;
 
-          return (
-            <li
-              key={stepNumber}
-              style={{
-                ...styles.li,
-                ...(isActive ? styles.active : {})
-              }}
-              onClick={() => onStepClick(stepNumber)}
-            >
-              Step {stepNumber}: {step.title}
-            </li>
-          );
-        })}
-      </ul>
+        return (
+          <div
+            key={stepNumber}
+            style={{
+              ...styles.step,
+              ...(isActive ? styles.activeStep : {}),
+              borderBottom: index !== steps.length - 1 ? "1px solid #ccc" : "none", // Line between sections
+            }}
+            onClick={() => navigate(step.path)}
+          >
+            <span style={styles.stepNumber}>Section {stepNumber}</span>
+            <span style={styles.stepTitle}>{step.title}</span>
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -30,23 +32,32 @@ const Sidebar = ({ steps, currentStep, onStepClick }) => {
 const styles = {
   sidebar: {
     width: '200px',
-    borderRight: '1px solid #ccc',
     minHeight: '100vh',
-    padding: '1rem',
-    backgroundColor: '#f8f8f8'
+    backgroundColor: '#f8f8f8',
+    padding: '10px',
   },
-  ul: {
-    listStyle: 'none',
-    padding: 0,
-  },
-  li: {
-    padding: '0.5rem 0',
+  step: {
+    padding: '12px 10px',
     cursor: 'pointer',
+    textAlign: 'left',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '3px',
   },
-  active: {
+  activeStep: {
+    backgroundColor: 'green',
+    color: 'white',
     fontWeight: 'bold',
-    color: 'blue'
-  }
+  },
+  stepNumber: {
+    fontSize: '14px',
+    fontStyle: 'italic',
+    color: '#333',
+  },
+  stepTitle: {
+    fontSize: '17px',
+    fontWeight: 'bold',
+  },
 };
 
 export default Sidebar;
