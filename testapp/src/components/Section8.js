@@ -106,10 +106,28 @@ function Section8() {
                     </div>
                 </div>
 
-                {/* Submit Button */}
-                <button type="submit" className="btn btn-primary submit-button">
-                    Submit
-                </button>
+                {/* Button Container */}
+                <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginTop: "1rem" }}>
+                    <button
+                        type="button"
+                        className="btn btn-info"
+                        onClick={() => navigate('/section7')}
+                    >
+                        Back
+                    </button>
+
+                    <button
+                        type="button"
+                        className="btn btn-info"
+                        onClick={() => navigate('/section9')}
+                    >
+                        Next
+                    </button>
+
+                    <button type="submit" className="btn btn-success">
+                        Submit
+                    </button>
+                </div>
             </form>
         </div>
     );
