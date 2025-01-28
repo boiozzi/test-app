@@ -21,11 +21,12 @@ function Navbar() {
           color: "white",
           margin: 0,
           fontSize: "1.8rem",
+          fontFamily: "serif",
           flexGrow: 1, // Ensures the text is centered
           textAlign: "center",
         }}
       >
-        Welcome to Our App
+        Pre-Screening App in Development :)
       </h1>
     </div>
   );
